@@ -1,0 +1,269 @@
+<html>
+<head>
+  <style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      
+      th, td {
+        text-align: left;
+        padding: 8px;
+      }
+      
+      tr:nth-child(even){background-color: #f2f2f2}
+      
+      th {
+        background-color: #ebd50e;
+        color: white;
+      }
+    #c1{
+      border:1px solid;
+
+    }
+    #c2{
+      border:1px solid;
+      
+    }
+    .button {
+      background-color: #04AA6D; /* Green */
+      border: none;
+      color: white;
+      padding: 10px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 4px 2px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+    }
+    .button5 {
+      background-color: white;
+      color: black;
+      border: 2px solid #555555;
+    }
+    
+    .button5:hover {
+      background-color: #555555;
+      color: white;
+    }
+    .element{
+      padding: 2px 12px;
+    }
+    .date{
+        color: #a13f0e;
+        font-size: 30px;
+        padding: 4px 18px;
+    }
+.item{
+    padding: 4px 18px;
+    margin:20px 20px;
+}
+  </style>
+</head>
+<title>
+  Weather App
+</title>
+<body>
+<h1>Weather Forecast</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="radio" id="coordinate" name="location" value="Coordinate" onchange="check(this)">
+    <label for="html">Coordinates</label>
+    <input type="radio" id="place" name="location" value="Location" onchange="check(this)">
+    <label for="css">Location</label><br>
+    <div id="c1" style="font-size: 18px;">
+      <div class="element">
+    City:
+      <input type="text" class="form-control" id="city" name="city"  placeholder="Enter the city name" ><br>
+      </div>
+      <div class="element">
+      State Code:
+      <input type="text" class="form-control" id="statecode" name="statecode" placeholder="Enter the state code"><br>
+      </div>
+      <div class="element">
+      Country Code:
+      <input type="text" class="form-control" id="cc" name="cc" placeholder="Enter the country code"><br>
+      </div>
+    </div>
+    <div id="c2" style="font-size: 18px;">
+      <div class="element">
+      Longitude:
+      <input type="text" class="form-control" id="longitude" name="longitude" placeholder="Enter the longitude coordinate"><br>
+      </div>
+      <div class="element">
+      Latitude:
+      <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Enter the latitude coordinate"><br>
+      </div>
+    </div>
+      <input type="submit" class="button button5" value="fetch">
+    
+<form>
+
+    {%for item in ans%}
+    <div class="item">
+    <div class="date">
+    Forecast for {{item.date}}
+    </div>
+    <table>
+    
+  <tr>
+   <th> Parameter</th>
+   <th>Value</th>
+   <th>Information</th>
+  </tr>
+  
+{%if item.weathermain%}
+<tr>
+  
+  <td>Weathermain</td>
+  <td>{{item.weathermain}}</td>
+  <td>Group of weather parameters (Rain, Snow, Clouds etc.)</td>
+</tr>
+{%endif%}
+{%if item.weatherdesc%}
+<tr>
+    <td>Weather Description</td>
+    <td>{{item.weatherdesc}}</td>
+    <td>Weather condition within the group</td>
+</tr>
+{%endif%}
+
+
+{%if item.maintemp%}
+<tr>
+  <td>Temperature</td>
+  <td>{{item.maintemp}}</td>
+  <td>Temperature. Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit</td>
+</tr>
+{%endif%}
+{%if item.tempmin%}
+<tr>
+  <td>Minimum Temperature</td>
+  <td>{{item.tempmin}}</td>
+  <td>Minimum temperature at the moment. This is minimal currently observed temperature (within large megalopolises and urban areas).</td>
+</tr>
+{%endif%}
+{%if item.tempmax%}
+<tr>
+  <td>Maximum Temperature</td>
+  <td>{{item.tempmax}}</td>
+  <td>Maximum temperature at the moment. This is maximal currently observed temperature (within large megalopolises and urban areas).</td>
+</tr>
+{%endif%}
+{%if item.pressure%}
+<tr>
+  <td>pressure</td>
+  <td>{{item.pressure}}</td>
+  <td>Atmospheric pressure on the sea level, hPa</td>
+</tr>
+{%endif%}
+{%if item.humidity%}
+<tr>
+  <td>humidity</td>
+  <td>{{item.humidity}}</td>
+  <td>Humidity, %</td>
+</tr>
+{%endif%}
+{%if item.sea_level%}
+<tr>
+  <td>Sea Level</td>
+  <td>{{item.sea_level}}</td>
+  <td> Atmospheric pressure on the sea level, hPa</td>
+</tr>
+{%endif%}
+{%if item.grnd_level%}
+
+<tr>
+  <td>Ground Level</td>
+  <td>{{item.grnd_level}}</td>
+  <td> Atmospheric pressure on the Ground level, hPa</td>
+</tr>
+{%endif%}
+
+<!--______________________________________________________________________________-->
+{%if item.visibility%}
+<tr>
+  <td>visibility</td>
+  <td>{{item.visibility}}</td>
+  <td>Visibility, meter. The maximum value of the visibility is 10 km</td>
+</tr>
+{%endif%}
+{%if item.windspeed%}
+<tr>
+  <td>Wind Speed</td>
+  <td>{{item.windspeed}}</td>
+  <td> Wind speed. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour</td>
+</tr>
+{%endif%}
+{%if item.winddeg%}
+<tr>
+  <td>Wind Degree</td>
+  <td>{{item.winddeg}}</td>
+  <td> Wind direction, degrees (meteorological)</td>
+</tr>
+{%endif%}
+{%if item.windgust%}
+<tr>
+  <td>Wind Gust</td>
+  <td>{{item.windgust}}</td>
+  <td> Wind gust. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour</td>
+</tr>
+{%endif%}
+{%if item.clouds%}
+<tr>
+  <td>Clouds</td>
+  <td>{{item.clouds}}</td>
+  <td> Cloudiness, %</td>
+</tr>
+{%endif%}
+{%if item.rain%}
+<tr>
+  <td>Rain</td>
+  <td>{{item.rain}}</td>
+  <td> Rain volume for the last 1 hour, mm. Please note that only mm as units of measurement are available for this parameter</td>
+</tr>
+{%endif%}
+{%if item.snow%}
+<tr>
+  <td>Snow</td>
+  <td>{{item.snow}}</td>
+  <td>Snow volume for the last 1 hour, mm. Please note that only mm as units of measurement are available for this parameter</td>
+</tr>
+{%endif%}
+
+</table>
+</div>
+{%endfor%}
+
+
+<script>
+  var x= document.getElementById('coordinate')
+  function check(){   
+      
+  if(document.getElementById('coordinate').checked) {   
+    document.getElementById("c2").style.display = "block";
+    document.getElementById("c1").style.display = "none";
+    /*
+    document.getElementById("latitude").style.visibility = "visible";
+    document.getElementById("longitude").style.visibility = "visible";
+    document.getElementById("city").style.visibility = "hidden";
+    document.getElementById("cc").style.visibility = "hidden";
+    document.getElementById("statecode").style.visibility = "hidden";*/
+  }
+  else{
+    document.getElementById("c1").style.display = "block";
+    document.getElementById("c2").style.display = "none";
+    /*
+    document.getElementById("latitude").style.visibility = "hidden";
+    document.getElementById("longitude").style.visibility = "hidden";
+    document.getElementById("city").style.visibility = "visible";
+    document.getElementById("cc").style.visibility = "visible";
+    document.getElementById("statecode").style.visibility = "visible";*/
+  }
+}
+</script>
+</body>
+</html>
